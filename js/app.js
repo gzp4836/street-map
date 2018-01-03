@@ -1,25 +1,25 @@
-var header = document.getElementsByTagName("header")[0];
-var header_button = header.getElementsByTagName("button")[0];
-var menu = document.getElementsByClassName('menu')[0];
-var input = document.getElementsByTagName('input')[0];
+let header = document.getElementsByTagName("header")[0];
+let header_button = header.getElementsByTagName("button")[0];
+let menu = document.getElementsByClassName('menu')[0];
+let input = document.getElementsByTagName('input')[0];
 
 // google map 加载异常弹框提示
-var mapLoadError = function () {
+let mapLoadError = function () {
     alert("google map load error!please check!");
 }
 function initMap() {
-    var markers = [];
+    let markers = [];
     // 地图对象
-    var map = new google.maps.Map(document.getElementById('map'), {
+    let map = new google.maps.Map(document.getElementById('map'), {
         center: locData[0].location,
         zoom: 12
     });
     // 弹框窗口对象
-    var infowindow = new google.maps.InfoWindow();
+    let infowindow = new google.maps.InfoWindow();
 
     // 地点对象的构造函数，内部hiedMark是控制地图marker显示隐藏的关键属性
-    var Loc = function (index, loc) {
-        var self = this;
+    let Loc = function (index, loc) {
+        let self = this;
         this.name = ko.observable(loc.name);
         this.index = ko.observable(index);
         this.visiable = ko.observable(true);
@@ -27,12 +27,11 @@ function initMap() {
             !self.visiable() ? markers[self.index()].setMap(null) : markers[self.index()].setMap(map);
         });
     }
-    var ViewModel = function () {
-        var self = this;
+    let ViewModel = function () {
+        let self = this;
         this.locList = ko.observableArray([]);
         this.inputValue = ko.observable("Ch");
-        // 绑定值变化的事件
-        this.inputValue.subscribe(self.fillter);
+        
         // 数据循环，创建marker,设置监听，构建页面数据对象Loc
         for (let i = 0; i < locData.length; i++) {
             let marker = new google.maps.Marker({
@@ -108,7 +107,8 @@ function initMap() {
                 item.visiable(item.name().indexOf(input.value) != -1);
             }
         }
-        
+       // 绑定值变化的事件
+       this.inputValue.subscribe(self.fillter); 
 
     }
 
