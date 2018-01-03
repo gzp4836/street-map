@@ -56,13 +56,25 @@ body {
 
 .menu .search input {
   background-color: #efefef;
-  width: 80%;
+  display: block;
+  width: 100%;
   height: 100%;
   outline: none;
-  border: none;
   padding: 0 10px;
   font-size: 1em;
-  border-radius: unset; }
+  border-radius: unset;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.8); }
+
+.menu .search::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  background-image: url(../img/search.svg);
+  background-size: contain;
+  right: 10px;
+  top: 10px; }
 
 .menu .search button {
   display: inline-block;
