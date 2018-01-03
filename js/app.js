@@ -3,7 +3,10 @@ var header_button = header.getElementsByTagName("button")[0];
 var menu = document.getElementsByClassName('menu')[0];
 var input = document.getElementsByTagName('input')[0];
 
-
+// google map 加载异常弹框提示
+var mapLoadError = function () {
+    alert("google map load error!please check!");
+}
 function initMap() {
     var markers = [];
     // 地图对象
@@ -27,9 +30,12 @@ function initMap() {
     var ViewModel = function () {
         var self = this;
         this.locList = ko.observableArray([]);
+        this.inputValue = ko.observable("Ch");
+        // 绑定值变化的事件
+        this.inputValue.subscribe(self.fillter);
         // 数据循环，创建marker,设置监听，构建页面数据对象Loc
-        for (var i = 0; i < locData.length; i++) {
-            var marker = new google.maps.Marker({
+        for (let i = 0; i < locData.length; i++) {
+            let marker = new google.maps.Marker({
                 map: map,
                 animation: google.maps.Animation.DROP,
                 position: locData[i].location
@@ -38,23 +44,23 @@ function initMap() {
             markers.push(marker);
             // 设置marker的监听，异步jsonp获取wiki百科数据
             marker.addListener('click', function () {
-                var self = this;
+                let self = this;
                 // 移动地图中心点
                 map.panTo(new google.maps.LatLng(self.position.lat(), self.position.lng()));
-                var cityStr = locData[this._i_index].cityStr;
-                var wikipediaUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + cityStr + '&format=json&callback=wikiCallback';
+                let cityStr = locData[this._i_index].cityStr;
+                let wikipediaUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + cityStr + '&format=json&callback=wikiCallback';
                 // 异步获取wiki信息，方式是jsonp
                 $.ajax({
                     url: wikipediaUrl,
                     dataType: 'jsonp',
                     async: true,
                     success: function (response) {
-                        var wikiElem = '';
-                        var info = "wiki get Nothing";
-                        var wikiData = response[1];
+                        let wikiElem = '';
+                        let info = "wiki get Nothing";
+                        let wikiData = response[1];
                         if (wikiData.length != 0) {
-                            for (var i = 0; i < wikiData.length; i++) {
-                                var data = wikiData[i];
+                            for (let i = 0; i < wikiData.length; i++) {
+                                let data = wikiData[i];
                                 wikiElem += '<li class="wikipedia"><a href="http://en.wikipedia.org/wiki/' + data + '">' + data + '</a></li>';
                             }
                             info = '<h2>' + cityStr + '</h2><div id="pano"></div><h3>Wikipedia Links</h3><ul>' + wikiElem + '</ur>';
@@ -84,7 +90,7 @@ function initMap() {
         }
         // 菜单按妞点击，显示或隐藏菜单
         this.aClicker = function () {
-            var tranformX = window.getComputedStyle(menu).transform.split('(')[1].split(')')[0].split(',')[4];
+            let tranformX = window.getComputedStyle(menu).transform.split('(')[1].split(')')[0].split(',')[4];
             if (tranformX < 0) {
                 menu.style.transform = "translateX(0)";
                 header_button.className = "back";
@@ -97,13 +103,15 @@ function initMap() {
 
         // 过滤方法的执行
         this.fillter = function () {
-            for (var j = 0; j < self.locList().length; j++) {
-                var item = self.locList()[j];
+            for (let j = 0; j < self.locList().length; j++) {
+                let item = self.locList()[j];
                 item.visiable(item.name().indexOf(input.value) != -1);
             }
         }
+        
 
     }
+
     ko.applyBindings(new ViewModel());
 }
 

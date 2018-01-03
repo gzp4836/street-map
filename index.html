@@ -16,8 +16,10 @@
     </header>
     <div class="menu">
         <div class="search">
-            <input type="search" value="Ch"/>
-            <button data-bind="click:fillter">Fillter</button>
+                <input data-bind="textInput: inputValue"/>
+            <!-- <input data-bind="event: { change: fillter }, value: inputValue, valueUpdate: 'afterkeydown'" /> -->
+            <!-- <input type="search" value="Ch" data-bind="event: {change:fillter},value:inputValue"/> -->
+            <!-- <button data-bind="click:fillter">Fillter</button> -->
         </div>
         <ul class="list" data-bind="foreach:locList">
             <li data-bind="text:name,visible:visiable,click:$parent.markerShow"></li>
@@ -29,8 +31,7 @@
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZuN1mAD68bsZoAbBXCUfqM561iPPAgrk&libraries=places&callback=initMap"
-    async defer></script>
-
+<script onerror="mapLoadError();" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZuN1mAD68bsZoAbBXCUfqM561iPPAgrk&libraries=places&callback=initMap"
+    async defer></script> te: 'afterkeydown'"/>
 
 </html>
